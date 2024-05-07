@@ -33,7 +33,8 @@ function BattlePage() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 text-black">
+      <h1 className="text-xl font-bold">Battle</h1>
       {selectedArtwork !== null && (
         <div className="absolute top-0 left-0 flex flex-col justify-center w-screen h-screen">
           <div className="absolute z-10 w-full h-full bg-black opacity-50"></div>
@@ -68,38 +69,46 @@ function BattlePage() {
           </div>
         </div>
       )}
-      <span>Pick your favorite artwork</span>
-      <div className="p-4">
-        {status === "loading" && <p>Loading...</p>}
+      <div>
+        {status === "loading" && <p className="mt-4">Loading...</p>}
         {status === "idle" && imageUrls.length > 0 && (
-          <div className="flex">
-            <div className="flex-1 p-4">
-              <h2 className="m-auto">
-                {artworksData[0].artist_title} - {artworksData[0].title}
-              </h2>
-              <button>
-                <img
-                  src={imageUrls[0]}
-                  alt="Artwork 1"
-                  className="h-full aspect-auto"
-                  onClick={() => selectArtwork(0)}
-                />
-              </button>
+          <div className="flex flex-col mt-4">
+            <div className="flex italic">
+              <p className="flex-1 pr-2">{artworksData[0].title}</p>
+              <p className="flex-1">{artworksData[1].title}</p>
             </div>
-            <div>VS</div>
-            <div className="flex-1 p-4">
-              <h2 className="m-auto">
-                {artworksData[1].artist_title} - {artworksData[1].title}
-              </h2>
-              <button>
-                <img
-                  src={imageUrls[1]}
-                  alt="Artwork 2"
-                  className="m-auto w-96"
-                  onClick={() => selectArtwork(1)}
-                />
-              </button>
+            <div className="flex font-bold">
+              <span className="flex-1 pr-2">
+                {artworksData[0].artist_title}
+              </span>
+              <span className="flex-1">{artworksData[1].artist_title}</span>
             </div>
+            <div className="relative flex mt-4">
+              <div className="flex-1 pr-2">
+                <div className="w-full p-4 bg-white aspect-square">
+                  <img
+                    src={imageUrls[0]}
+                    alt="Artwork 1"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              </div>
+              <div className="absolute top-0 bottom-0 left-0 right-0 m-auto text-center bg-white border-2 rounded-full w-16 h-16 leading-[4rem] border-yellow">
+                <span className="m-auto font-bold">VS</span>
+              </div>
+              <div className="flex-1 pl-2">
+                <div className="w-full p-4 bg-white aspect-square">
+                  <img
+                    src={imageUrls[1]}
+                    alt="Artwork 2"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              </div>
+            </div>
+            <span className="mt-4 font-bold text-center">
+              Select your favourite Artwork
+            </span>
           </div>
         )}
       </div>

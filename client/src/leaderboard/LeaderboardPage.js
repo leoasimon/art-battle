@@ -5,8 +5,8 @@ function LeaderboardPage() {
 
   return (
     <div className="p-4 text-black">
-      <h1 className="text-xl">Leaderboard</h1>
-      {status === "loading" && <p>Loading...</p>}
+      <h1 className="text-xl font-bold">Leaderboard</h1>
+      {status === "loading" && <p className="mt-4">Loading...</p>}
       {status === "idle" && leaderboard.length > 0 && (
         <div className="flex flex-col mt-4 bg-white">
           <div className="flex p-3 font-bold border-b border-magenta">
