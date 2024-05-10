@@ -9,10 +9,12 @@
     "pg": "^8.11.5"
   },
   "devDependencies": {
-    "dotenv": "^16.4.5"
+    "dotenv": "^16.4.5",
+    "nodemon": "^3.1.0"
   },
   "scripts": {
     "start": "node index.js",
+    "watch": "nodemon index.js",
     "dev": "nodemon index.js"
   }
 }

@@ -8,18 +8,31 @@ const client = new Client(process.env.DATABASE_URL);
 const app = express();
 
 app.use(cors());
-app.use(express.json()) // for parsing application/json
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-
+app.use(express.json()); // for parsing application/json
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
 app.get("/leaderboard", async (req, res) => {
+  const { page = 1 } = req.query;
+  const offset = Math.max(0, page - 1) * 10;
   try {
-    const results = await client.query("SELECT * FROM scores ORDER BY score DESC LIMIT 10");
-    res.json(results.rows);
+    const results = await client.query(
+      "SELECT * FROM scores ORDER BY score DESC LIMIT 10 OFFSET $1",
+      [offset]
+    );
+    const total = await client.query("SELECT COUNT(*) FROM scores");
+
+    const nPages = Math.ceil(total.rows[0].count / 10);
+
+    res.json({
+      page,
+      total: total.rows[0].count,
+      nPages,
+      data: results.rows,
+    });
   } catch (err) {
     console.error("error executing query:", err);
   }
@@ -28,24 +41,47 @@ app.get("/leaderboard", async (req, res) => {
 app.post("/matchup", async (req, res) => {
   const { contestantA, contestantB, winner } = req.body;
 
-  const scoreAResult = await client.query("SELECT score FROM scores WHERE artwork_id = $1", [contestantA]);
-  const scoreBResult = await client.query("SELECT score FROM scores WHERE artwork_id = $1", [contestantB]);
+  const scoreAResult = await client.query(
+    "SELECT score FROM scores WHERE artwork_id = $1",
+    [contestantA]
+  );
+  const scoreBResult = await client.query(
+    "SELECT score FROM scores WHERE artwork_id = $1",
+    [contestantB]
+  );
 
   if (scoreAResult.rowCount === 0) {
-    await client.query("INSERT INTO scores (artwork_id, score) VALUES ($1, 500)", [contestantA]);
+    await client.query(
+      "INSERT INTO scores (artwork_id, score) VALUES ($1, 500)",
+      [contestantA]
+    );
   }
 
   if (scoreBResult.rowCount === 0) {
-    await client.query("INSERT INTO scores (artwork_id, score) VALUES ($1, 500)", [contestantB]);
+    await client.query(
+      "INSERT INTO scores (artwork_id, score) VALUES ($1, 500)",
+      [contestantB]
+    );
   }
 
   const scoreA = scoreAResult.rowCount === 0 ? 500 : scoreAResult.rows[0].score;
   const scoreB = scoreBResult.rowCount === 0 ? 500 : scoreBResult.rows[0].score;
 
-  const [newScoreA, newScoreB] = eloRating(scoreA, scoreB, 32, winner === contestantA ? 1 : 0);
+  const [newScoreA, newScoreB] = eloRating(
+    scoreA,
+    scoreB,
+    32,
+    winner === contestantA ? 1 : 0
+  );
 
-  await client.query("UPDATE scores SET score = $1 WHERE artwork_id = $2", [newScoreA, contestantA]);
-  await client.query("UPDATE scores SET score = $1 WHERE artwork_id = $2", [newScoreB, contestantB]);
+  await client.query("UPDATE scores SET score = $1 WHERE artwork_id = $2", [
+    newScoreA,
+    contestantA,
+  ]);
+  await client.query("UPDATE scores SET score = $1 WHERE artwork_id = $2", [
+    newScoreB,
+    contestantB,
+  ]);
 
   res.json({ newScoreA, newScoreB });
 });
@@ -65,18 +101,13 @@ app.post("/matchup", async (req, res) => {
 app.listen(8080, async () => {
   await client.connect();
   console.log("Server is running on port 8080");
-})
+});
 
 const probability = (ratingOne, ratingTwo) => {
   return (1 * 1) / (1 + 1 * Math.pow(10, (1 * (ratingOne - ratingTwo)) / 400));
 };
 
-const eloRating = (
-  ra,
-  rb,
-  k,
-  d
-) => {
+const eloRating = (ra, rb, k, d) => {
   const pb = probability(ra, rb);
   const pa = probability(rb, ra);
 
