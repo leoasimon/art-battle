@@ -10,6 +10,8 @@ module.exports = {
       magenta: "#EA3788",
       "light-gray": "#EEE5E9",
       "light-pink": "#FFD3E7",
+      blue: "#2E86DE",
+      danger: "#EE5253",
     },
   },
   plugins: [],

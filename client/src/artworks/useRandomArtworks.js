@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const totalPages = 6801;
 
@@ -10,7 +10,7 @@ const useRandomArtworks = () => {
   const [imageUrls, setImageUrls] = useState([]);
   const [artworksData, setArtworksData] = useState([]);
 
-  useEffect(() => {
+  const getArtworks = () => {
     setStatus("loading");
 
     const randomPageNb1 = Math.floor(Math.random() * totalPages);
@@ -26,7 +26,7 @@ const useRandomArtworks = () => {
         Promise.all(responses.map((response) => response.json()))
       )
       .then((datas) => {
-        setArtworksData(datas.map(d => d.data[0]));
+        setArtworksData(datas.map((d) => d.data[0]));
         setImageUrls(
           datas.map(
             (data) => `
@@ -36,9 +36,9 @@ const useRandomArtworks = () => {
         );
         setStatus("idle");
       });
-  }, []);
+  };
 
-  return { status, imageUrls, artworksData };
+  return { status, imageUrls, artworksData, getArtworks };
 };
 
 export default useRandomArtworks;

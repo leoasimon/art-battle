@@ -1,21 +1,20 @@
-import axios from "axios"
-import { useState } from "react"
+import axios from "axios";
+import { useState } from "react";
 
 function useMatchup() {
-    const [status, setStatus] = useState("idle")
+  const [status, setStatus] = useState("idle");
 
-    const playMatchup = async (contestantA, contestantB, winner) => {
-        setStatus("loading")
-        const result = await axios.post("http://localhost:8080/matchup", {
-            contestantA,
-            contestantB,
-            winner
-        })
-        setStatus("idle")
-        console.log("Matchup played", result)   
-    }
+  const playMatchup = async (contestantA, contestantB, winner) => {
+    setStatus("loading");
+    await axios.post("http://localhost:8080/matchup", {
+      contestantA,
+      contestantB,
+      winner,
+    });
+    setStatus("idle");
+  };
 
-    return { playMatchup, status }
+  return { playMatchup, status };
 }
 
 export default useMatchup;
