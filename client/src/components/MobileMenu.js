@@ -30,8 +30,8 @@ function MobileMenu() {
         <div className="w-full h-full bg-black opacity-60" />
       </div>
       <div
-        className={`transition-all duration-200 absolute top-0 ${
-          menuOpen ? "right-0" : "right-[-24rem]"
+        className={`absolute top-0 right-0 ${
+          menuOpen ? "block" : "hidden"
         } z-10 h-screen bg-white shadow-xl w-96`}
       >
         <div className="px-4 py-6">
