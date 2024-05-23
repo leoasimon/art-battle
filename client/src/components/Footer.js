@@ -30,7 +30,7 @@ function Footer() {
           Copyright © 2024 Léo Simon
         </span>
       </div>
-      <div className="p-2 text-xs">
+      <div className="flex flex-col p-2 space-y-2 text-xs">
         <span>
           Thanks to the{" "}
           <a
@@ -51,6 +51,17 @@ function Footer() {
             open API
           </a>{" "}
           that made this project possible
+        </span>
+        <span>
+          UIcons by{" "}
+          <a
+            href="https://www.flaticon.com/uicons"
+            target="_blank"
+            rel="noreferrer"
+            className="font-bold underline"
+          >
+            Flaticon
+          </a>
         </span>
       </div>
     </footer>
