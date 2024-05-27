@@ -35,3 +35,12 @@ export const fetchArtistWork = async (artistId) => {
 
   return artworks;
 };
+
+export const fetchArtwork = async (artworkId) => {
+  const response = await axios.get(`${baseApiUrl}/${artworkId}`);
+
+  return {
+    ...response.data.data,
+    image_url: `${baseImageUrl}${response.data.data.image_id}/full/843,/0/default.jpg`,
+  };
+}

@@ -4,6 +4,7 @@ import Layout from "./components/Layout";
 import BattlePage from "./battle/BattlePage";
 import LeaderboardPage from "./leaderboard/LeaderboardPage";
 import ArtistPage from "./artist/ArtistPage";
+import ArtworkPage from "./artworks/ArtworkPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="leaderboard" element={<LeaderboardPage />} />
           <Route path="*" element={<div>404 not found</div>} />
           <Route path="artist/:id" element={<ArtistPage />} />
+          <Route path="artworks/:id" element={<ArtworkPage />} />
         </Route>
       </Routes>
     </div>
