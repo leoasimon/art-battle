@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useRandomArtworks from "../artworks/useRandomArtworks";
 import SelectionModal from "./SelectionModal";
+import { Link } from "react-router-dom";
 
 function BattlePage() {
   const { status, imageUrls, artworksData, getArtworks } = useRandomArtworks();
@@ -45,10 +46,18 @@ function BattlePage() {
               <p className="flex-1">{artworksData[1].title}</p>
             </div>
             <div className="flex font-bold">
-              <span className="flex-1 pr-2">
+              <Link
+                to={`/artist/${artworksData[0].artist_id}`}
+                className="flex-1 pr-2"
+              >
                 {artworksData[0].artist_title}
-              </span>
-              <span className="flex-1">{artworksData[1].artist_title}</span>
+              </Link>
+              <Link
+                to={`/artist/${artworksData[1].artist_id}`}
+                className="flex-1"
+              >
+                {artworksData[1].artist_title}
+              </Link>
             </div>
             <div className="relative flex mt-4">
               <div className="flex-1 pr-2">
