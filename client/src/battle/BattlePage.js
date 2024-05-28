@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import useRandomArtworks from "../artworks/useRandomArtworks";
 import SelectionModal from "./SelectionModal";
 import { Link } from "react-router-dom";
+import { fetchRandomArtworks } from "../artworks/artworksApi";
 
 function BattlePage() {
-  const { status, imageUrls, artworksData, getArtworks } = useRandomArtworks();
-
+  const [status, setStatus] = useState("idle");
+  const [artworks, setArtworks] = useState([]);
   const [selectedArtwork, setSelectedArtwork] = useState(null);
 
   const selectArtwork = (index) => {
@@ -17,13 +17,19 @@ function BattlePage() {
   };
 
   const handleModalClose = () => {
-    getArtworks();
+    getContestants();
     setSelectedArtwork(null);
   };
 
+  const getContestants = async () => {
+    setStatus("loading");
+    const data = await fetchRandomArtworks(2);
+    setArtworks(data);
+    setStatus("idle");
+  };
+
   useEffect(() => {
-    getArtworks();
-    // eslint-disable-next-line
+    getContestants();
   }, []);
 
   return (
@@ -31,32 +37,28 @@ function BattlePage() {
       <h1 className="text-xl font-bold">Battle</h1>
       <SelectionModal
         isOpen={selectedArtwork !== null}
-        imageUrl={imageUrls[selectedArtwork]}
-        artworkData={artworksData[selectedArtwork]}
-        contestant={artworksData[selectedArtwork === 0 ? 1 : 0]}
+        artworkData={artworks[selectedArtwork]}
+        contestant={artworks[selectedArtwork === 0 ? 1 : 0]}
         onCancel={cancelSelection}
         onClose={handleModalClose}
       />
       <div>
         {status === "loading" && <p className="mt-4">Loading...</p>}
-        {status === "idle" && imageUrls.length > 0 && (
+        {status === "idle" && artworks.length > 0 && (
           <div className="flex flex-col mt-4">
             <div className="flex italic">
-              <p className="flex-1 pr-2">{artworksData[0].title}</p>
-              <p className="flex-1">{artworksData[1].title}</p>
+              <p className="flex-1 pr-2">{artworks[0].title}</p>
+              <p className="flex-1">{artworks[1].title}</p>
             </div>
             <div className="flex font-bold">
               <Link
-                to={`/artist/${artworksData[0].artist_id}`}
+                to={`/artist/${artworks[0].artist_id}`}
                 className="flex-1 pr-2"
               >
-                {artworksData[0].artist_title}
+                {artworks[0].artist_title}
               </Link>
-              <Link
-                to={`/artist/${artworksData[1].artist_id}`}
-                className="flex-1"
-              >
-                {artworksData[1].artist_title}
+              <Link to={`/artist/${artworks[1].artist_id}`} className="flex-1">
+                {artworks[1].artist_title}
               </Link>
             </div>
             <div className="relative flex mt-4">
@@ -66,7 +68,7 @@ function BattlePage() {
                   className="w-full p-4 bg-white aspect-square"
                 >
                   <img
-                    src={imageUrls[0]}
+                    src={artworks[0].image_url}
                     alt="Artwork 1"
                     className="object-cover w-full h-full"
                   />
@@ -81,7 +83,7 @@ function BattlePage() {
                   className="w-full p-4 bg-white aspect-square"
                 >
                   <img
-                    src={imageUrls[1]}
+                    src={artworks[1].image_url}
                     alt="Artwork 2"
                     className="object-cover w-full h-full"
                   />

@@ -3,7 +3,6 @@ import useMatchup from "./useMatchup";
 
 function SelectionModal({
   isOpen,
-  imageUrl,
   artworkData,
   onCancel,
   onClose,
@@ -16,7 +15,7 @@ function SelectionModal({
   const handleClose = () => {
     onClose();
     setSubmitted(false);
-  }
+  };
 
   const validateSelection = () => {
     if (artworkData === null || contestant === null) {
@@ -42,12 +41,11 @@ function SelectionModal({
         <div className="relative z-20 flex flex-col p-8 m-auto bg-white rounded-lg shadow-md w-96">
           <span className="text-center">You selected</span>
           <div className="mt-4">
-            <span className="block">{matchupStatus}</span>
             <span className="block italic">{artworkData.title}</span>
             <span className="block font-bold">{artworkData.artist_title}</span>
           </div>
           <img
-            src={imageUrl}
+            src={artworkData.image_url}
             alt="Selected artwork"
             className="object-cover w-full mt-4 aspect-square"
           />

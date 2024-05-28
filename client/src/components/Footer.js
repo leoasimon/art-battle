@@ -32,14 +32,14 @@ function Footer() {
       </div>
       <div className="flex flex-col p-2 space-y-2 text-xs">
         <span>
-          Thanks to the{" "}
+          Thanks to The{" "}
           <a
             href="https://www.artic.edu/"
             target="_blank"
             rel="noreferrer"
             className="font-bold underline"
           >
-            Art Institute of Chicago
+            Art Institute of Chicago®
           </a>{" "}
           and their{" "}
           <a
