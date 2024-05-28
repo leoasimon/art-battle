@@ -34,7 +34,7 @@ function BattlePage() {
 
   return (
     <div className="p-4 text-black">
-      <h1 className="text-xl font-bold">Battle</h1>
+      <h1 className="text-2xl font-bold">Battle</h1>
       <SelectionModal
         isOpen={selectedArtwork !== null}
         artworkData={artworks[selectedArtwork]}
@@ -46,20 +46,35 @@ function BattlePage() {
         {status === "loading" && <p className="mt-4">Loading...</p>}
         {status === "idle" && artworks.length > 0 && (
           <div className="flex flex-col mt-4">
-            <div className="flex italic">
-              <p className="flex-1 pr-2">{artworks[0].title}</p>
-              <p className="flex-1">{artworks[1].title}</p>
-            </div>
             <div className="flex font-bold">
-              <Link
-                to={`/artist/${artworks[0].artist_id}`}
-                className="flex-1 pr-2"
-              >
-                {artworks[0].artist_title}
-              </Link>
-              <Link to={`/artist/${artworks[1].artist_id}`} className="flex-1">
-                {artworks[1].artist_title}
-              </Link>
+              <p className="flex-1 pr-2">
+                {artworks[0].title}, {artworks[0].date_display}
+              </p>
+              <p className="flex-1">
+                {artworks[1].title}, {artworks[1].date_display}
+              </p>
+            </div>
+            <div className="flex">
+              {artworks[0].artist_title ? (
+                <Link
+                  to={`/artist/${artworks[0].artist_id}`}
+                  className="flex-1 pr-2"
+                >
+                  {artworks[0].artist_title}
+                </Link>
+              ) : (
+                <span className="flex-1 pr-2">Unknown</span>
+              )}
+              {artworks[1].artist_title ? (
+                <Link
+                  to={`/artist/${artworks[1].artist_id}`}
+                  className="flex-1"
+                >
+                  {artworks[1].artist_title}
+                </Link>
+              ) : (
+                <span className="flex-1">Unknown</span>
+              )}
             </div>
             <div className="relative flex mt-4">
               <div className="flex-1 pr-2">

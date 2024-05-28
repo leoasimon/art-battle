@@ -6,7 +6,6 @@ function useMatchup() {
 
   const playMatchup = async (contestantA, contestantB, winner) => {
     setStatus("loading");
-    console.log("playMatchup", contestantA, contestantB, winner);
     await axios.post("http://localhost:8080/matchup", {
       contestantA,
       contestantB,
