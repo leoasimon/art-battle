@@ -24,7 +24,10 @@ function ArtworkPage() {
           <Link to={`/artist/${artwork.artist_id}`}>
             <h1 className="mb-2 text-xl font-bold">{artwork.artist_title}</h1>
           </Link>
-          <span className="italic">{artwork.title}</span>
+          <span className="italic">
+            {artwork.title}
+            {artwork.date_display ? `, ${artwork.date_display}` : ""}
+          </span>
           <img src={artwork.image_url} alt={artwork.title} className="mt-4" />
           {artwork.description && (
             <div
