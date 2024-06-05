@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { fetchRandomArtworks } from "../artworks/artworksApi";
 
 function BattlePage() {
-  const [status, setStatus] = useState("idle");
+  const [artFetchStatus, setArtFetchStatus] = useState("idle");
   const [artworks, setArtworks] = useState([]);
   const [selectedArtwork, setSelectedArtwork] = useState(null);
 
@@ -22,10 +22,10 @@ function BattlePage() {
   };
 
   const getContestants = async () => {
-    setStatus("loading");
+    setArtFetchStatus("loading");
     const data = await fetchRandomArtworks(2);
     setArtworks(data);
-    setStatus("idle");
+    setArtFetchStatus("idle");
   };
 
   useEffect(() => {
@@ -43,8 +43,8 @@ function BattlePage() {
         onClose={handleModalClose}
       />
       <div>
-        {status === "loading" && <p className="mt-4">Loading...</p>}
-        {status === "idle" && artworks.length > 0 && (
+        {artFetchStatus === "loading" && <p className="mt-4">Loading...</p>}
+        {artFetchStatus === "idle" && artworks.length > 0 && (
           <div className="flex flex-col mt-4">
             <div className="flex font-bold">
               <p className="flex-1 pr-2">
