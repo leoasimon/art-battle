@@ -5,3 +5,7 @@ api/.env
 client/.env
 
 get_public_artworks
+
+# Local Netlify folder
+.netlify
+node_modules
