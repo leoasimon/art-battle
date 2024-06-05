@@ -1,11 +1,11 @@
 const baseApiUrl = "https://api.artic.edu/api/v1/artworks/";
 
 export const fetchLeaderboard = async (page = 1) => {
-  const response = await fetch(
-    `${process.env.REACT_APP_SCORING_API_URL}/leaderboard?page=${page}`
+  const result = await fetch("/.netlify/functions/get-leaderboard?page=" + page).then(
+    (response) => response.json()
   );
 
-  const result = await response.json();
+  console.log(result);
   const { nPages, data } = result;
 
   const ps = data.map((entry) => {
