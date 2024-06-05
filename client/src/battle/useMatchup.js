@@ -6,7 +6,7 @@ function useMatchup() {
 
   const playMatchup = async (contestantA, contestantB, winner) => {
     setStatus("loading");
-    await axios.post("http://localhost:8080/matchup", {
+    await axios.post("/.netlify/functions/play-matchup", {
       contestantA,
       contestantB,
       winner,

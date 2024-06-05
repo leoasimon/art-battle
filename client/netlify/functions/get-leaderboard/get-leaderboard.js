@@ -13,20 +13,19 @@ const handler = async (event) => {
       skip: offset,
       take: 10,
       orderBy: {
-        score: 'desc'
+        score: "desc",
       },
-    })
+    });
 
     const total = await prisma.score.count();
     const nPages = Math.ceil(total / 10);
 
-    console.log({ leaderboard, total });
     return {
       statusCode: 200,
       body: JSON.stringify({
         total,
         nPages,
-        data: leaderboard
+        data: leaderboard,
       }),
       // // more keys you can return:
       // headers: { "headerName": "headerValue", ... },

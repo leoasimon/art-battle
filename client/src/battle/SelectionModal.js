@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useMatchup from "./useMatchup";
+import { playMatchup } from "./battleApi";
 
 function SelectionModal({
   isOpen,
@@ -8,7 +8,7 @@ function SelectionModal({
   onClose,
   contestant,
 }) {
-  const { playMatchup, status: matchupStatus } = useMatchup();
+  const [matchupStatus, setMatchupStatus] = useState("idle");
 
   const [submitted, setSubmitted] = useState(false);
 
@@ -17,17 +17,24 @@ function SelectionModal({
     setSubmitted(false);
   };
 
+  const handleMatchup = () => {
+    setMatchupStatus("loading");
+    playMatchup(artworkData.id, contestant.id, artworkData.id).then(() => {
+      setMatchupStatus("idle");
+    });
+  };
+
   const validateSelection = () => {
     if (artworkData === null || contestant === null) {
       return;
     }
 
-    // Call the playMatchup function from useMatchup.js
+    // Call the playMatchup function from matchupApi.js
     // with the selected artwork and the other artwork
     // that was not selected
 
     setSubmitted(true);
-    playMatchup(artworkData.id, contestant.id, artworkData.id);
+    handleMatchup();
   };
 
   return (
