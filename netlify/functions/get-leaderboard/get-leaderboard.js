@@ -17,6 +17,10 @@ const handler = async (event) => {
       },
     });
 
+    const withRanking = leaderboard.map((entry, index) => ({
+      ...entry,
+      rank: index + offset + 1,
+    }));
     const total = await prisma.score.count();
     const nPages = Math.ceil(total / 10);
 
@@ -25,7 +29,7 @@ const handler = async (event) => {
       body: JSON.stringify({
         total,
         nPages,
-        data: leaderboard,
+        data: withRanking,
       }),
       // // more keys you can return:
       // headers: { "headerName": "headerValue", ... },

@@ -63,7 +63,7 @@ function LeaderboardPage() {
                   index % 2 === 0 ? "bg-light-pink" : "bg-white"
                 }`}
               >
-                <span className="w-12">{index + 1}</span>
+                <span className="w-12">{entry.rank}</span>
                 <span className="flex-1 pr-2 overflow-hidden italic text-ellipsis whitespace-nowrap">
                   {entry.artwork.title}
                 </span>
