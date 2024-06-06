@@ -63,6 +63,10 @@ function Footer() {
             Flaticon
           </a>
         </span>
+        <span>
+          Artwork PNGs by{" "}
+          <a href="https://www.vecteezy.com/free-png/artwork" className="font-bold underline">Vecteezy</a>
+        </span>
       </div>
     </footer>
   );
