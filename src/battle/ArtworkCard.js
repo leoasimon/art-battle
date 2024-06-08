@@ -1,4 +1,6 @@
 import { ArrowForwardIos } from "@mui/icons-material";
+import { useState } from "react";
+import FullScreenImageOverlay from "./FullScreenImageOverlay";
 
 function createDisplayTitle(title, dateDisplay) {
   const fittingTitle = title.length > 20 ? `${title.slice(0, 20)}...` : title;
@@ -11,9 +13,24 @@ function ArtworkCard({ artwork }) {
   const displayTitle = createDisplayTitle(artwork.title, artwork.date_display);
   const fullTitle = `${artwork.title}, ${artwork.date_display}`;
 
+  const [showImageOverlay, setShowImageOverlay] = useState(false);
+
+  const openOverlay = () => {
+    setShowImageOverlay(true);
+  };
+
+  const closeOverlay = () => {
+    setShowImageOverlay(false);
+  };
+
   return (
     <div className="flex w-full bg-white rounded-md shadow-md">
-      <div className="w-7/12 aspect-square">
+      <FullScreenImageOverlay
+        url={artwork.image_url}
+        handleClose={closeOverlay}
+        show={showImageOverlay}
+      />
+      <div className="w-7/12 aspect-square" onClick={openOverlay}>
         <img
           src={artwork.image_url}
           alt="Artwork"
@@ -28,7 +45,9 @@ function ArtworkCard({ artwork }) {
           >
             {displayTitle}
           </h3>
-          <span className="block font-serif text-md">{artwork.artist_title}</span>
+          <span className="block font-serif text-md">
+            {artwork.artist_title}
+          </span>
           <button className="text-purple">
             <span className="font-bold text-md">Learn More</span>
             <ArrowForwardIos />
@@ -36,7 +55,7 @@ function ArtworkCard({ artwork }) {
         </div>
         <div>
           <button className="block px-4 py-2 m-auto border-2 border-purple text-purple">
-            VOTE FOR ME
+            SELECT
           </button>
         </div>
       </div>
