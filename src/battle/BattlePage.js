@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SelectionModal from "./SelectionModal";
+import SelectionDialog from "./SelectionDialog";
 import { Link } from "react-router-dom";
 import { fetchRandomArtworks } from "../artworks/artworksApi";
 import ArtworkCard from "./ArtworkCard";
@@ -37,12 +37,12 @@ function BattlePage() {
   return (
     <div className="p-2 text-black">
       <h1 className="p-2 text-2xl font-bold">Battle</h1>
-      <SelectionModal
-        isOpen={selectedArtwork !== null}
+      <SelectionDialog
+        show={selectedArtwork !== null}
         artworkData={artworks[selectedArtwork]}
         contestant={artworks[selectedArtwork === 0 ? 1 : 0]}
         onCancel={cancelSelection}
-        onClose={handleModalClose}
+        handleClose={handleModalClose}
       />
       <div>
         {artFetchStatus === "loading" && <p className="mt-4">Loading...</p>}
@@ -117,8 +117,8 @@ function BattlePage() {
             </h2>
 
             <div className="flex flex-col my-2 space-y-2">
-              <ArtworkCard artwork={artworks[0]} />
-              <ArtworkCard artwork={artworks[1]} />
+              <ArtworkCard artwork={artworks[0]} handleSelect={() => selectArtwork(0)} />
+              <ArtworkCard artwork={artworks[1]} handleSelect={() => selectArtwork(1)} />
             </div>
 
             <div className="p-2">

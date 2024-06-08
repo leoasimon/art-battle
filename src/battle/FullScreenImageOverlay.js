@@ -10,6 +10,7 @@ function FullScreenImageOverlay({ url, handleClose, show }) {
         src={url}
         alt="Artwork"
         className="object-contain max-w-full max-h-full"
+        onClick={(e) => e.stopPropagation()}
       />
     </div>
   );

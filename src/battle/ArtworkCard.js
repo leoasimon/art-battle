@@ -9,7 +9,7 @@ function createDisplayTitle(title, dateDisplay) {
   return fittingTitle + `, ${fittingDate}`;
 }
 
-function ArtworkCard({ artwork }) {
+function ArtworkCard({ artwork, handleSelect }) {
   const displayTitle = createDisplayTitle(artwork.title, artwork.date_display);
   const fullTitle = `${artwork.title}, ${artwork.date_display}`;
 
@@ -54,7 +54,7 @@ function ArtworkCard({ artwork }) {
           </button>
         </div>
         <div>
-          <button className="block px-4 py-2 m-auto border-2 border-purple text-purple">
+          <button className="block px-4 py-2 m-auto border-2 border-purple text-purple" onClick={handleSelect}>
             SELECT
           </button>
         </div>
