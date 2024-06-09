@@ -12,10 +12,6 @@ const handler = async (event) => {
     const leaderboard =
       await prisma.$queryRaw`SELECT id, score, artwork_id, RANK() OVER (ORDER BY score DESC) rank FROM score ORDER BY score DESC LIMIT 10 OFFSET ${offset};`;
 
-    const withRanking = leaderboard.map((entry, index) => ({
-      ...entry,
-      rank: index + offset + 1,
-    }));
     const total = await prisma.score.count();
     const nPages = Math.ceil(total / 10);
 
