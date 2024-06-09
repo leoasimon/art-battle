@@ -9,13 +9,8 @@ const handler = async (event) => {
     const page = event.queryStringParameters.page || 1;
     const offset = Math.max(0, page - 1) * 10;
 
-    const leaderboard = await prisma.score.findMany({
-      skip: offset,
-      take: 10,
-      orderBy: {
-        score: "desc",
-      },
-    });
+    const leaderboard =
+      await prisma.$queryRaw`SELECT id, score, artwork_id, RANK() OVER (ORDER BY score DESC) rank FROM score ORDER BY score DESC LIMIT 10 OFFSET ${offset};`;
 
     const withRanking = leaderboard.map((entry, index) => ({
       ...entry,
@@ -26,11 +21,14 @@ const handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        total,
-        nPages,
-        data: withRanking,
-      }),
+      body: JSON.stringify(
+        {
+          total,
+          nPages,
+          data: leaderboard,
+        },
+        (_, v) => (typeof v === "bigint" ? v.toString() : v)
+      ),
       // // more keys you can return:
       // headers: { "headerName": "headerValue", ... },
       // isBase64Encoded: true,

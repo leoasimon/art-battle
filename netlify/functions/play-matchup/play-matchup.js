@@ -23,23 +23,14 @@ const eloRating = (ra, rb, k, d) => {
 // Docs on event and context https://docs.netlify.com/functions/build/#code-your-function-2
 const handler = async (event) => {
   try {
-    const subject = event.queryStringParameters.name || "World";
-
     const { contestantA, contestantB, winner } = JSON.parse(event.body);
 
-    const [scoreAResult, scoreBResult] = await prisma.score.findMany({
-      where: {
-        artwork_id: {
-          in: [contestantA, contestantB],
-        },
-      },
-      select: {
-        score: true,
-      },
-    });
+    const [beforeBattleA, beforeBattleB] =
+      await prisma.$queryRaw`SELECT t.id, t.score, t.rank, t.artwork_id FROM (SELECT id, score, artwork_id, RANK() OVER (ORDER BY score DESC) rank FROM score ORDER BY score) as t WHERE t.artwork_id in (${contestantA}, ${contestantB});`;
 
-    const scoreA = scoreAResult ? scoreAResult.score : 0;
-    const scoreB = scoreBResult ? scoreBResult.score : 0;
+    console.log(beforeBattleA, beforeBattleB);
+    const scoreA = beforeBattleA ? beforeBattleA.score : 0;
+    const scoreB = beforeBattleB ? beforeBattleB.score : 0;
 
     const [newScoreA, newScoreB] = eloRating(
       scoreA,
@@ -79,12 +70,18 @@ const handler = async (event) => {
       updateScoreB,
     ]);
 
+    const winnerAfterBattle =
+      await prisma.$queryRaw`SELECT t.id, t.score, t.rank, t.artwork_id FROM (SELECT id, score, artwork_id, RANK() OVER (ORDER BY score DESC) rank FROM score ORDER BY score) as t WHERE t.artwork_id = ${winner};`;
+
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        newScoreA,
-        newScoreB,
-      }),
+      body: JSON.stringify(
+        {
+          beforeBattle: winner === contestantA ? beforeBattleA : beforeBattleB,
+          afterBattle: winnerAfterBattle[0],
+        },
+        (_, v) => (typeof v === "bigint" ? v.toString() : v)
+      ),
       // // more keys you can return:
       // headers: { "headerName": "headerValue", ... },
       // isBase64Encoded: true,
