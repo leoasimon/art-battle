@@ -28,7 +28,6 @@ const handler = async (event) => {
     const [beforeBattleA, beforeBattleB] =
       await prisma.$queryRaw`SELECT t.id, t.score, t.rank, t.artwork_id FROM (SELECT id, score, artwork_id, RANK() OVER (ORDER BY score DESC) rank FROM score ORDER BY score) as t WHERE t.artwork_id in (${contestantA}, ${contestantB});`;
 
-    console.log(beforeBattleA, beforeBattleB);
     const scoreA = beforeBattleA ? beforeBattleA.score : 0;
     const scoreB = beforeBattleB ? beforeBattleB.score : 0;
 
