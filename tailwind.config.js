@@ -15,6 +15,11 @@ module.exports = {
       purple: "#5C3BA3",
       green: "#1DD1A1"
     },
+    fontFamily: {
+      serif: ["Inria", "Playfair Display", "serif"],
+      sans: ["Quicksand", "Poppins", "sans-serif"],
+      body: ["Quicksand", "Poppins", "sans-serif"]
+    }
   },
   plugins: [],
 };

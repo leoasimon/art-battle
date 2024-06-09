@@ -26,7 +26,7 @@ function BattlePayloadDialog({ battlePayload, handleClose, show, artwork }) {
               Thanks for your vote!
             </h1>
             <h2 className="text-xl">
-              You helped "<span className="italic family-serif">{artwork.title}</span>" climb up the ranking ladder.
+              You helped "<span className="font-serif italic">{artwork.title}</span>" climb up the ranking ladder.
             </h2>
             <div className="flex m-auto space-x-4 text-bold">
               <div className="flex flex-col items-end">

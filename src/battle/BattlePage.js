@@ -12,6 +12,10 @@ function BattlePage() {
   const [showSelectionDialog, setShowSelectionDialog] = useState(false);
   const [battlePayload, setBattlePayload] = useState(null);
 
+  const nextBattle = () => {
+    getContestants();
+  }
+
   const selectArtwork = (index) => {
     setSelectedArtwork(index);
     setShowSelectionDialog(true);
@@ -34,7 +38,7 @@ function BattlePage() {
   const handleBattlePayloadClose = () => {
     setBattlePayload(null);
     setSelectedArtwork(null);
-    getContestants();
+    nextBattle();
   };
 
   const getContestants = async () => {
@@ -87,7 +91,7 @@ function BattlePage() {
             <div className="p-2">
               <span className="font-bold">Can't decide?</span>
               <br />
-              <button className="text-purple">
+              <button className="text-purple" onClick={nextBattle}>
                 <span>Move on to the next battle</span>
                 <ArrowForwardIos />
               </button>
